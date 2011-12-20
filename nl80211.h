@@ -2022,6 +2022,35 @@ enum nl80211_mntr_flags {
 };
 
 /**
+ * enum nl80211_mesh_power_mode - mesh power save modes
+ *
+ * Mesh power save modes.
+ *
+ * @__NL80211_MESH_POWER_INVALID: internal use
+ *
+ * @NL80211_MESH_POWER_ACTIVE: the mesh STA in Awake state all the time
+ * @NL80211_MESH_POWER_LIGHT_SLEEP: the mesh STA alternates between
+ * 	Active and Doze states, the mesh STA should listen to all the
+ * 	Beacons
+ * @NL80211_MESH_POWER_DEEP_SLEEP: the mesh STA alternates between
+ * 	Active and Doze states, the mesh STA may choose not listen to
+ * 	the Beacons
+ *
+ * @__NL80211_MESH_POWER_AFTER_LAST: internal use
+ * @NL80211_MESH_POWER_MAX: highest possible mesh power mode *
+ */
+enum nl80211_mesh_power_mode {
+	__NL80211_MESH_POWER_INVALID,
+	NL80211_MESH_POWER_ACTIVE,
+	NL80211_MESH_POWER_LIGHT_SLEEP,
+	NL80211_MESH_POWER_DEEP_SLEEP,
+
+	/* keep last */
+	__NL80211_MESH_POWER_AFTER_LAST,
+	ML80211_MESH_POWER_MAX = __NL80211_MESH_POWER_AFTER_LAST - 1
+};
+
+/**
  * enum nl80211_meshconf_params - mesh configuration parameters
  *
  * Mesh configuration parameters. These can be changed while the mesh is
@@ -2084,6 +2113,8 @@ enum nl80211_mntr_flags {
  * access to a broader network beyond the MBSS.  This is done via Root
  * Announcement frames.
  *
+ * @NL80211_MESHCONF_POWER_MODE: non-peer mesh power mode
+ *
  * @NL80211_MESHCONF_ATTR_MAX: highest possible mesh configuration attribute
  *
  * @__NL80211_MESHCONF_ATTR_AFTER_LAST: internal use
@@ -2107,6 +2138,7 @@ enum nl80211_meshconf_params {
 	NL80211_MESHCONF_ELEMENT_TTL,
 	NL80211_MESHCONF_HWMP_RANN_INTERVAL,
 	NL80211_MESHCONF_GATE_ANNOUNCEMENTS,
+	NL80211_MESHCONF_POWER_MODE,
 
 	/* keep last */
 	__NL80211_MESHCONF_ATTR_AFTER_LAST,

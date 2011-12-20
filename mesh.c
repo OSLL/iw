@@ -72,6 +72,24 @@ static uint32_t _parse_u8_as_bool(const char *str, _any *ret)
 	return 0;
 }
 
+static uint32_t _parse_u8_power_mode(const char *str, _any *ret)
+{
+	unsigned long int v;
+
+	/* Parse attribute for the name of power mode */
+	if (!strcmp(str, "active"))
+		v = NL80211_MESH_POWER_ACTIVE;
+	else if (!strcmp(str, "light"))
+		v = NL80211_MESH_POWER_LIGHT_SLEEP;
+	else if (!strcmp(str, "deep"))
+		v = NL80211_MESH_POWER_DEEP_SLEEP;
+	else
+		return 0xff;
+
+	ret->u.as_8 = (uint8_t)v;
+	return 0;
+}
+
 static uint32_t _parse_u16(const char *str, _any *ret)
 {
 	char *endptr = NULL;
@@ -99,6 +117,26 @@ static uint32_t _parse_u32(const char *str, _any *ret)
 static void _print_u8(struct nlattr *a)
 {
 	printf("%d", nla_get_u8(a));
+}
+
+static void _print_u8_power_mode(struct nlattr *a)
+{
+	unsigned long v = nla_get_u8(a);
+
+	switch (v) {
+	case NL80211_MESH_POWER_ACTIVE:
+		printf("active");
+		break;
+	case NL80211_MESH_POWER_LIGHT_SLEEP:
+		printf("light");
+		break;
+	case NL80211_MESH_POWER_DEEP_SLEEP:
+		printf("deep");
+		break;
+	default:
+		printf("undefined");
+		break;
+	}
 }
 
 static void _print_u16(struct nlattr *a)
@@ -177,6 +215,8 @@ const static struct mesh_param_descr _mesh_param_descrs[] =
 	_my_nla_put_u16, _parse_u16, _print_u16},
 	{"mesh_gate_announcements", NL80211_MESHCONF_GATE_ANNOUNCEMENTS,
 	_my_nla_put_u8, _parse_u8, _print_u8},
+	{"mesh_power_mode", NL80211_MESHCONF_POWER_MODE,
+	_my_nla_put_u8, _parse_u8_power_mode, _print_u8_power_mode}
 };
 
 static void print_all_mesh_param_descr(void)
@@ -257,8 +297,15 @@ static int set_interface_meshparam(struct nl80211_state *state,
 		/* Parse the new value */
 		ret = mdescr->parse_fn(value, &any);
 		if (ret != 0) {
-			printf("%s must be set to a number "
-			       "between 0 and %u\n", mdescr->name, ret);
+			if (mdescr->mesh_param_num 
+			    == NL80211_MESHCONF_POWER_MODE)
+				printf("%s must be set to active, light or "
+					"deep.\n", mdescr->name);
+			else 
+				printf("%s must be set to a number "
+					"between 0 and %u\n", 
+					mdescr->name, ret);
+
 			return 2;
 		}
 
