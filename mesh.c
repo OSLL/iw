@@ -216,7 +216,9 @@ const static struct mesh_param_descr _mesh_param_descrs[] =
 	{"mesh_gate_announcements", NL80211_MESHCONF_GATE_ANNOUNCEMENTS,
 	_my_nla_put_u8, _parse_u8, _print_u8},
 	{"mesh_power_mode", NL80211_MESHCONF_POWER_MODE,
-	_my_nla_put_u8, _parse_u8_power_mode, _print_u8_power_mode}
+	_my_nla_put_u8, _parse_u8_power_mode, _print_u8_power_mode},
+	{"mesh_awake_window", NL80211_MESHCONF_AWAKE_WINDOW,
+	_my_nla_put_u32, _parse_u32, _print_u32_in_TUs},
 };
 
 static void print_all_mesh_param_descr(void)
