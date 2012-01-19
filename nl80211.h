@@ -1185,7 +1185,7 @@ enum nl80211_commands {
  *    abides to when initiating radiation on DFS channels. A country maps
  *    to one DFS region.
  *
- * @NL80211_ATTR_STA_MESH_POWER_MODE: Link specific mesh power mode 
+ * @NL80211_ATTR_LOCAL_MESH_POWER_MODE: Link specific mesh power mode 
  * 	within the mesh peering
  *
  * @NL80211_ATTR_MAX: highest attribute number currently defined
@@ -1431,7 +1431,7 @@ enum nl80211_attrs {
 	NL80211_ATTR_DISABLE_HT,
 	NL80211_ATTR_HT_CAPABILITY_MASK,
 
-	NL80211_ATTR_STA_MESH_POWER_MODE,
+	NL80211_ATTR_LOCAL_MESH_POWER_MODE,
 
 	/* add attributes here, update the policy in nl80211.c */
 
@@ -1646,8 +1646,8 @@ enum nl80211_sta_bss_param {
  *     containing info as possible, see &enum nl80211_sta_bss_param
  * @NL80211_STA_INFO_CONNECTED_TIME: time since the station is last connected
  * @NL80211_STA_INFO_STA_FLAGS: Contains a struct nl80211_sta_flag_update.
- * @NL80211_STA_INFO_MESH_LOCAL_POWER_MODE: Link specific mesh local power mode
- * @NL80211_STA_INFO_MESH_PEER_POWER_MODE: Link specific mesh peer power mode
+ * @NL80211_STA_INFO_LOCAL_MESH_PS_MODE: Link specific mesh local power mode
+ * @NL80211_STA_INFO_PEER_MESH_PS_MODE: Link specific mesh peer power mode
  * 	within the mesh peering
  * @__NL80211_STA_INFO_AFTER_LAST: internal
  * @NL80211_STA_INFO_MAX: highest possible station info attribute
@@ -1671,8 +1671,8 @@ enum nl80211_sta_info {
 	NL80211_STA_INFO_BSS_PARAM,
 	NL80211_STA_INFO_CONNECTED_TIME,
 	NL80211_STA_INFO_STA_FLAGS,
-	NL80211_STA_INFO_MESH_LOCAL_POWER_MODE,
-	NL80211_STA_INFO_MESH_PEER_POWER_MODE,
+	NL80211_STA_INFO_LOCAL_MESH_PS_MODE,
+	NL80211_STA_INFO_PEER_MESH_PS_MODE,
 	
 
 	/* keep last */

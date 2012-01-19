@@ -53,8 +53,8 @@ static int print_sta_handler(struct nl_msg *msg, void *arg)
 		[NL80211_STA_INFO_TX_FAILED] = { .type = NLA_U32 },
 		[NL80211_STA_INFO_STA_FLAGS] =
 			{ .minlen = sizeof(struct nl80211_sta_flag_update) },
-		[NL80211_STA_INFO_MESH_LOCAL_POWER_MODE] = { .type = NLA_U8},
-		[NL80211_STA_INFO_MESH_PEER_POWER_MODE] = { .type = NLA_U8},
+		[NL80211_STA_INFO_LOCAL_MESH_PS_MODE] = { .type = NLA_U8},
+		[NL80211_STA_INFO_PEER_MESH_PS_MODE] = { .type = NLA_U8},
 	};
 
 	static struct nla_policy rate_policy[NL80211_RATE_INFO_MAX + 1] = {
@@ -171,9 +171,9 @@ static int print_sta_handler(struct nl_msg *msg, void *arg)
 		}
 		printf("\n\tmesh plink:\t%s", state_name);
 	}
-	if (sinfo[NL80211_STA_INFO_MESH_LOCAL_POWER_MODE]) {
+	if (sinfo[NL80211_STA_INFO_LOCAL_MESH_PS_MODE]) {
 		switch (nla_get_u8(
-			sinfo[NL80211_STA_INFO_MESH_LOCAL_POWER_MODE])) {
+			sinfo[NL80211_STA_INFO_LOCAL_MESH_PS_MODE])) {
 		case NL80211_MESH_POWER_ACTIVE:
 			strcpy(power_mode_name, "ACTIVE");
 			break;
@@ -189,9 +189,9 @@ static int print_sta_handler(struct nl_msg *msg, void *arg)
 		}
 		printf("\n\tmesh local power mode:\t%s", power_mode_name);
 	}
-	if (sinfo[NL80211_STA_INFO_MESH_PEER_POWER_MODE]) {
+	if (sinfo[NL80211_STA_INFO_PEER_MESH_PS_MODE]) {
 		switch (nla_get_u8(
-			sinfo[NL80211_STA_INFO_MESH_PEER_POWER_MODE])) {
+			sinfo[NL80211_STA_INFO_PEER_MESH_PS_MODE])) {
 		case NL80211_MESH_POWER_ACTIVE:
 			strcpy(power_mode_name, "ACTIVE");
 			break;
@@ -453,7 +453,7 @@ static int handle_station_set_mesh_power_mode(struct nl80211_state *state,
 		return 1;
 
 	NLA_PUT(msg, NL80211_ATTR_MAC, ETH_ALEN, mac_addr);
-	NLA_PUT_U8(msg, NL80211_ATTR_STA_MESH_POWER_MODE, mesh_power_mode);
+	NLA_PUT_U8(msg, NL80211_ATTR_LOCAL_MESH_POWER_MODE, mesh_power_mode);
 
 	return 0;
 nla_put_failure:
